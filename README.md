@@ -1,6 +1,6 @@
 # noSqlite
 
-A learning project: an embedded, serverless NoSQL storage engine written in C++23.
+A learning project: an embedded, serverless NoSQL storage engine written in C11.
 
 Inspired by SQLite's single-file, in-process design — but for document/key-value data instead of relational tables.
 
@@ -14,12 +14,18 @@ Early stage. Currently building the storage layer:
 
 ## Build
 
-Requires CMake and a C++23 compiler (GCC 13+ or Clang 16+).
+Requires a C11 compiler (GCC or Clang).
 
 ```bash
-cmake -B build -S .
-cmake --build build
-./build/noSqlite
+make
+./build/nosqlite
+```
+
+Debug build:
+
+```bash
+make clean
+CFLAGS="-std=c11 -Wall -Wextra -Wpedantic -g -O0" make
 ```
 
 ## Layout
