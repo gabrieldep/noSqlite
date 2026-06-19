@@ -6,6 +6,7 @@
 #include "../storage/page.h"
 #include "../storage/page_manager.h"
 #include "frame_metadata.h"
+#include "page_table.h"
 
 struct BufferPool {
     size_t pool_size;
@@ -13,7 +14,7 @@ struct BufferPool {
 
     Page *page_pool;
     FrameMetadata *frame_metadata;
-    void *page_table;
+    HashNode *page_table;
     void *lru_list;
 };
 
@@ -25,7 +26,25 @@ BufferPool *buffer_pool_create(size_t pool_size, PageManager *page_manager) {
 
     pool->pool_size = pool_size;
     pool->page_manager = page_manager;
+
+    pool->page_pool = calloc(pool_size, sizeof(Page));
+    if (pool->page_pool == NULL) {
+        goto cleanup_pool;
+    }
+
+    pool->frame_metadata = calloc(pool_size, sizeof(FrameMetadata));
+    if (pool->frame_metadata == NULL) {
+        goto cleanup_page_pool;
+    }
+
     return pool;
+
+cleanup_page_pool:
+    free(pool->page_pool);
+
+cleanup_pool:
+    free(pool);
+    return NULL;
 }
 
 void buffer_pool_destroy(BufferPool *pool) {
@@ -33,8 +52,8 @@ void buffer_pool_destroy(BufferPool *pool) {
 }
 
 Page *buffer_pool_fetch(BufferPool *pool, uint32_t page_id, int *err) {
-    (void)pool;
-    (void)page_id;
+    (void) pool;
+    (void) page_id;
     if (err != NULL) {
         *err = NOSQLITE_OK;
     }
@@ -42,15 +61,15 @@ Page *buffer_pool_fetch(BufferPool *pool, uint32_t page_id, int *err) {
 }
 
 int buffer_pool_unpin(BufferPool *pool, uint32_t page_id, int is_dirty) {
-    (void)pool;
-    (void)page_id;
-    (void)is_dirty;
+    (void) pool;
+    (void) page_id;
+    (void) is_dirty;
     return NOSQLITE_OK;
 }
 
 Page *buffer_pool_new_page(BufferPool *pool, uint32_t *out_page_id, int *err) {
-    (void)pool;
-    (void)out_page_id;
+    (void) pool;
+    (void) out_page_id;
     if (err != NULL) {
         *err = NOSQLITE_OK;
     }
@@ -58,12 +77,12 @@ Page *buffer_pool_new_page(BufferPool *pool, uint32_t *out_page_id, int *err) {
 }
 
 int buffer_pool_flush_page(BufferPool *pool, uint32_t page_id) {
-    (void)pool;
-    (void)page_id;
+    (void) pool;
+    (void) page_id;
     return NOSQLITE_OK;
 }
 
 int buffer_pool_flush_all_pages(BufferPool *pool) {
-    (void)pool;
+    (void) pool;
     return NOSQLITE_OK;
 }
