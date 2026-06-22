@@ -31,5 +31,32 @@ void page_table_insert(HashNode **buckets, HashNode *node_pool, size_t pool_size
 }
 
 bool page_table_remove(HashNode **buckets, size_t pool_size, uint32_t page_id) {
+    const size_t hash_id = page_table_hash(page_id, pool_size);
+    HashNode *current = buckets[hash_id];
+
+    // If the node is already null
+    if (current == NULL) {
+        return false;
+    }
+
+    // If the node is the first one
+    if (current->page_id == page_id) {
+        buckets[hash_id] = current->next;
+        current->next = NULL;
+        return true;
+    }
+
+    // If the node is in the middle or in the end of the bucket
+    HashNode *prev = current;
+    current = current->next;
+    while (current != NULL) {
+        if (current->page_id == page_id) {
+            prev->next = current->next;
+            current->next = NULL;
+            return true;
+        }
+        prev = current;
+        current = current->next;
+    }
     return false;
 }
