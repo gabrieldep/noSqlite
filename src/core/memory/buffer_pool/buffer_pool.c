@@ -2,11 +2,11 @@
 
 #include <stdlib.h>
 
-#include "../../errors/storage_error.h"
-#include "../storage/page.h"
-#include "../storage/page_manager.h"
-#include "frame_metadata.h"
-#include "page_table.h"
+#include "../../../errors/storage_error.h"
+#include "../../storage/page.h"
+#include "../../storage/page_manager.h"
+#include "../frame_metadata/frame_metadata.h"
+#include "../page_table/page_table.h"
 
 struct BufferPool {
     size_t pool_size;

@@ -4,8 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../storage/page.h"
-#include "../storage/page_manager.h"
+#include "../../storage/page.h"
+#include "../../storage/page_manager.h"
 
 typedef struct BufferPool BufferPool;
 
