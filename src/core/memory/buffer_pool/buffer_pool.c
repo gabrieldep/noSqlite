@@ -6,6 +6,7 @@
 #include "../../storage/page.h"
 #include "../../storage/page_manager.h"
 #include "../frame_metadata/frame_metadata.h"
+#include "../lru_node/lru_node.h"
 #include "../page_table/page_table.h"
 
 struct BufferPool {
@@ -15,7 +16,7 @@ struct BufferPool {
     Page *page_pool;
     FrameMetadata *frame_metadata;
     HashNode *page_table;
-    void *lru_list;
+    LRUList *lru_list;
 };
 
 BufferPool *buffer_pool_create(size_t pool_size, PageManager *page_manager) {

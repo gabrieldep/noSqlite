@@ -7,7 +7,7 @@
 
 typedef struct PageManager PageManager;
 
-PageManager *page_manager_create(void);
+PageManager *page_manager_create(const char *filepath);
 void page_manager_destroy(PageManager *pm);
 
 int page_manager_read(PageManager *pm, uint32_t page_id, Page *out_page);
